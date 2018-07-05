@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -12,6 +13,8 @@ import (
 	"github.com/zetamatta/go-mbcs"
 	"github.com/zetamatta/pipe2excel/excel"
 )
+
+var noWidth = flag.Bool("n", false, "do not change column-width")
 
 // ConvRC return "XN" string to (n,x) which starts from (1,1)
 func ConvRC(rc string) (int, int) {
@@ -99,15 +102,17 @@ func main1(args []string) error {
 			col := left
 			line := scanner.Text()
 			for _, c := range line {
-				if _, ok := isWidthSet[col]; !ok {
-					_column, err := sheet.GetProperty("Columns", col)
-					if err != nil {
-						return err
+				if !*noWidth {
+					if _, ok := isWidthSet[col]; !ok {
+						_column, err := sheet.GetProperty("Columns", col)
+						if err != nil {
+							return err
+						}
+						column := _column.ToIDispatch()
+						column.PutProperty("ColumnWidth", 1.50)
+						column.Release()
+						isWidthSet[col] = struct{}{}
 					}
-					column := _column.ToIDispatch()
-					column.PutProperty("ColumnWidth", 1.50)
-					column.Release()
-					isWidthSet[col] = struct{}{}
 				}
 				_cell, err := sheet.GetProperty("Cells", row, col)
 				if err != nil {
@@ -133,7 +138,8 @@ func main1(args []string) error {
 }
 
 func main() {
-	if err := main1(os.Args[1:]); err != nil {
+	flag.Parse()
+	if err := main1(flag.Args()); err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(1)
 	}
