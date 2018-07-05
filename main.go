@@ -16,6 +16,8 @@ import (
 
 var noWidth = flag.Bool("n", false, "do not change column-width")
 
+var width = flag.Float64("w", 1.50, "Set column-width")
+
 // ConvRC return "XN" string to (n,x) which starts from (1,1)
 func ConvRC(rc string) (int, int) {
 	col := 0
@@ -109,7 +111,7 @@ func main1(args []string) error {
 							return err
 						}
 						column := _column.ToIDispatch()
-						column.PutProperty("ColumnWidth", 1.50)
+						column.PutProperty("ColumnWidth", *width)
 						column.Release()
 						isWidthSet[col] = struct{}{}
 					}
