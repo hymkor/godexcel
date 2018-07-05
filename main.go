@@ -84,6 +84,8 @@ func main1(args []string) error {
 		return err
 	}
 
+	isWidthSet := make(map[int]struct{})
+
 	row := top
 	for _, fname := range args {
 		fd, err := os.Open(fname)
@@ -97,6 +99,16 @@ func main1(args []string) error {
 			col := left
 			line := scanner.Text()
 			for _, c := range line {
+				if _, ok := isWidthSet[col]; !ok {
+					_column, err := sheet.GetProperty("Columns", col)
+					if err != nil {
+						return err
+					}
+					column := _column.ToIDispatch()
+					column.PutProperty("ColumnWidth", 1.50)
+					column.Release()
+					isWidthSet[col] = struct{}{}
+				}
 				_cell, err := sheet.GetProperty("Cells", row, col)
 				if err != nil {
 					return err
