@@ -4,9 +4,35 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/zetamatta/pipe2excel/excel"
 )
+
+// ConvRC return "XN" string to (n,x) which starts from (1,1)
+func ConvRC(rc string) (int, int) {
+	col := 0
+	i := 0
+	length := len(rc)
+	for i < length {
+		index := strings.IndexByte("ABCDEFGHIJKLMNOPQRSTUVWXYZ", rc[i])
+		if index < 0 {
+			break
+		}
+		col = col*26 + index + 1
+		i++
+	}
+	row := 0
+	for i < length {
+		index := strings.IndexByte("0123456789", rc[i])
+		if index < 0 {
+			break
+		}
+		row = row*10 + index
+		i++
+	}
+	return row, col
+}
 
 func main1(args []string) error {
 	excel1, err := excel.New(true)
