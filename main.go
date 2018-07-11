@@ -66,7 +66,7 @@ func main1(args []string) error {
 	if err != nil {
 		return err
 	}
-	defer excel1.Release()
+	defer excel1.Close()
 
 	var book1 *excel.Book
 	if len(args) > 0 && xlsPattern.MatchString(args[0]) {
@@ -88,6 +88,7 @@ func main1(args []string) error {
 	if err != nil {
 		return err
 	}
+	defer sheet.Release()
 
 	isWidthSet := make(map[int]struct{})
 
