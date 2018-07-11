@@ -17,6 +17,4 @@ godexcel [-n] [-w WIDTH] [start-cell] [end-cell] [excel-name.xlsx] textfile(s)..
 * `-w WIDTH` set column-width
 * `start-cell` left-top position like A1
 * `end-cell` right-bottom position like Z99
-
-
-
+* `-z` convert hankaku to zenkaku
