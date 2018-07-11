@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -99,7 +98,7 @@ func main1(args []string) error {
 			return err
 		}
 		defer fd.Close()
-		reader := mbcs.Reader(fd, func(error, io.Writer) bool { return false })
+		reader := mbcs.NewReader(fd)
 		scanner := bufio.NewScanner(reader)
 		for scanner.Scan() {
 			col := left
