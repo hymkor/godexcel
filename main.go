@@ -9,13 +9,18 @@ import (
 	"regexp"
 	"strings"
 
+	"golang.org/x/text/transform"
+	"golang.org/x/text/width"
+
 	"github.com/zetamatta/go-mbcs"
 	"github.com/zetamatta/pipe2excel/excel"
 )
 
 var noWidth = flag.Bool("n", false, "do not change column-width")
 
-var width = flag.Float64("w", 1.50, "Set column-width")
+var zenkaku = flag.Bool("z", false, "Convert to zenkaku")
+
+var colWidth = flag.Float64("w", 1.50, "Set column-width")
 
 // ConvRC return "XN" string to (n,x) which starts from (1,1)
 func ConvRC(rc string) (int, int) {
@@ -99,6 +104,9 @@ func main1(args []string) error {
 		}
 		defer fd.Close()
 		reader := mbcs.NewReader(fd)
+		if *zenkaku {
+			reader = transform.NewReader(reader, width.Widen)
+		}
 		scanner := bufio.NewScanner(reader)
 		for scanner.Scan() {
 			col := left
@@ -111,7 +119,7 @@ func main1(args []string) error {
 							return err
 						}
 						column := _column.ToIDispatch()
-						column.PutProperty("ColumnWidth", *width)
+						column.PutProperty("ColumnWidth", *colWidth)
 						column.Release()
 						isWidthSet[col] = struct{}{}
 					}
