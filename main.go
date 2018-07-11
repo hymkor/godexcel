@@ -52,6 +52,10 @@ var rcPattern = regexp.MustCompile(`^[A-Za-z]+[0-9]+$`)
 var xlsPattern = regexp.MustCompile(`.*\.xls[xm]?$`)
 
 func main1(args []string) error {
+	if len(args) <= 0 {
+		flag.PrintDefaults()
+		return nil
+	}
 	top := 1
 	left := 1
 	bottom := 200
