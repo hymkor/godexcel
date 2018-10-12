@@ -12,7 +12,7 @@ import (
 	"golang.org/x/text/transform"
 	"golang.org/x/text/width"
 
-	"github.com/zetamatta/go-mbcs"
+	"github.com/zetamatta/go-texts/mbcs"
 	"github.com/zetamatta/pipe2excel/excel"
 )
 
@@ -107,7 +107,7 @@ func main1(args []string) error {
 			return err
 		}
 		defer fd.Close()
-		reader := mbcs.NewReader(fd)
+		reader := mbcs.NewAutoDetectReader(fd, mbcs.ConsoleCP())
 		if *zenkaku {
 			reader = transform.NewReader(reader, width.Widen)
 		}
