@@ -1,13 +1,15 @@
 GodExcel !
 ==========
 
+[Download](https://github.com/zetamatta/godexcel/releases)
+
 Insert textfile to excel sheet...
 
 ```
 godexcel.exe C3 Z20 main.go
 ```
 
-<img src="sample.png" alt="[godexcel.exe C3 Z20 main.go]" />
+![godexcel.exe C3 Z20 main.go](./sample.png)
 
 ```
 godexcel [-n] [-w WIDTH] [start-cell] [end-cell] [excel-name.xlsx] textfile(s)...
